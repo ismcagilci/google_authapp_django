@@ -1,0 +1,1 @@
+celery -A crwizard_task worker -l INFO -Q celery_worker --pool=solo
