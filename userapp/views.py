@@ -4,6 +4,8 @@ from django.http import HttpResponse
 import requests
 from .models import plantModel
 from . import celery_func
+from django.contrib.auth.models import User
+from django.contrib.auth import logout
 
 # Create your views here.
 
@@ -18,7 +20,7 @@ def xml_parser(request):
         return render(request,"dashboard.html")
 
 
-def login(request):
+def login_user(request):
     if request.user.is_authenticated:
         return render(request,"dashboard.html")
     elif request.method == "POST":
@@ -33,45 +35,29 @@ def login(request):
             return render(request,"login.html",{"error":"This user not found"})
     else:
         return render(request,"login.html")
-def logout(request):
-    pass
+def logout_user(request):
+    logout(request)
+    return render(request,"login.html")
 
-
-def signIn(request):
-    if request.method == "POST":
-        username = request.POST.get("username")
-        password = request.POST.get("password")
-        print(username,password)
-        check_user = authenticate(username = username,password = password)
-        print(check_user)
-        if check_user:
-            return render(request,"dashboard.html")
-        else:
-            return render(request,"signIn.html",{"error":"This user not found"})
-
-    else:
-        return render(request,"signIn.html")
-
+    
 
 def signUp(request):
 
     if request.method == 'POST':
         username = request.POST.get("username")
-        if userModel.objects.filter(username=username).exists():
+        if User.objects.filter(username=username).exists():
             return render(request,"signUp.html",{"error":"This username is already in use"})
         password = request.POST.get("password")
         email = request.POST.get("email")
-        if userModel.objects.filter(email = email).exists():
+        if User.objects.filter(email = email).exists():
             return render(request,"signUp.html",{"error":"This email is already in use"})
-        biography = request.POST.get("biography")
-        pp = request.FILES["profile_picture"]
-        new_user = userModel(username=username,email=email,biography=biography,profile_picture = pp)
+        new_user = User(username=username,email=email)
         new_user.set_password(password)
         new_user.save()
                                                             
-        return redirect("/signIn/")
+        return redirect("/login/")
     else:
-        return render(request,"signUp.html")
+        return render(request,"signup.html")
 
 def dashboard(request):
     return render(request,"dashboard.html")

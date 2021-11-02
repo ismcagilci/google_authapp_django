@@ -2,6 +2,7 @@ from django.apps import AppConfig
 import requests
 import xmltodict
 
+
 class UserappConfig(AppConfig):
     name = 'userapp'
     def ready(self):
@@ -17,7 +18,7 @@ class UserappConfig(AppConfig):
                 pass
             else:
                 plant_model = plantModel(common = plant.get("COMMON"),botanical=plant.get("BOTANICAL"),zone=plant.get("ZONE"),
-                ligth=plant.get("LIGHT"),price = plant.get("PRICE"),availability=plant.get("AVAILABILITY"),main_user= user)
+                ligth=plant.get("LIGHT"),price = plant.get("PRICE"),availability=plant.get("AVAILABILITY"))
                 plant_model.save()
                 change_status = 1
         if change_status == 1:

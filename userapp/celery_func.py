@@ -15,7 +15,7 @@ def check_xml_file(file_adress,username):
         all_plants = plant_catalog.get("CATALOG").get("PLANT")
         for plant in all_plants:
             plant_model = plantModel(common = plant.get("COMMON"),botanical=plant.get("BOTANICAL"),zone=plant.get("ZONE"),
-            ligth=plant.get("LIGHT"),price = plant.get("PRICE"),availability=plant.get("AVAILABILITY"),main_user= user)
+            ligth=plant.get("LIGHT"),price = plant.get("PRICE"),availability=plant.get("AVAILABILITY"))
             plant_model.save()
         plants = plantModel.objects.filter(zone = "Annual")
         for plant in plants:
