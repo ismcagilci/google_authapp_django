@@ -9,7 +9,7 @@ urlpatterns = [
     path('login/', views.login_user),
     path('signup/', views.signUp),
     path('accounts/', include('allauth.urls')),
-    path('logout', views.logout_user),
+    path('logout/', views.logout_user),
     path('xml_parser/', views.xml_parser),
 
 ]
