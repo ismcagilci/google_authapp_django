@@ -1,12 +1,11 @@
 from django.shortcuts import render,redirect
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate,login
 from django.http import HttpResponse
 import requests
 from .models import plantModel
 from . import celery_func
 from django.contrib.auth.models import User
 from django.contrib.auth import logout
-
 # Create your views here.
 
 def xml_parser(request):
@@ -28,8 +27,8 @@ def login_user(request):
         password = request.POST.get("password")
         print(username,password)
         check_user = authenticate(username = username,password = password)
-        print(check_user)
         if check_user:
+            login(request,check_user)
             return render(request,"dashboard.html")
         else:
             return render(request,"login.html",{"error":"This user not found"})
